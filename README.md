@@ -4,13 +4,11 @@ PlatformIo vscode user guide and tips after fresh install on ubuntu or debian
 1. First run tools/setup.sh
 2. Install PlatformIO vscode extenstions
 
-https://docs.platformio.org/en/latest/integration/ide/vscode.html#proxy-server-support
-
-Open VSCode Settings and search for “Proxy”. Please set “Http: Proxy” and disable “Http: Proxy Strict SSL”.
-
 # PlatformIO IDE extension does not work with Remote Development using SSH
 https://github.com/platformio/platformio-vscode-ide/issues/942
 https://github.com/luxk3/ubuntu_server_remote_dev_platformio
+https://github.com/platformio/platformio-vscode-ide/issues/3408
+https://docs.platformio.org/en/latest/integration/ide/vscode.html#proxy-server-support
 https://github.com/platformio/platformio-vscode-ide/issues/3408
 
 Update vscode file 
