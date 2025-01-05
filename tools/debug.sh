@@ -13,10 +13,16 @@
 #mv xtensa-esp32s3-elf-gdb xtensa-esp32s3-elf-gdb.orig
 #cp ~/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/bin/xtensa-esp32s3-elf-gdb xtensa-esp32s3-elf-gdb
 #cp ~/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/bin/xtensa-esp-elf-gdb-no-python .
-#cp ~/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/lib/xtensa_esp32s3.so ../lib
+#cp ~/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/lib/xtensa_esp32s3.so ../lib/
 
-mv xtensa-esp32s3-elf-gdb xtensa-esp32s3-elf-gdb.orig ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb
-cp xtensa-esp-elf-gdb-no-python ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp-elf-gdb-no-python
-cp xtensa_esp32s3.so ~/.platformio/packages/toolchain-xtensa-esp32s3/????
+# Delete and restore
+mv ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb.orig ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb
+rm ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb
+rm ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp-elf-gdb-no-python
+rm ~/.platformio/packages/toolchain-xtensa-esp32s3/lib/xtensa_esp32s3.so
 
-
+# Automatic build
+mv ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gdb.orig
+cp ../debugger/xtensa-esp32s3-elf-gdb ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/
+cp ../debugger/xtensa-esp-elf-gdb-no-python ~/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp-elf-gdb-no-python
+cp ../debugger/xtensa_esp32s3.so ~/.platformio/packages/toolchain-xtensa-esp32s3/lib/
