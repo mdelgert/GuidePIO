@@ -1,5 +1,5 @@
 # GuidePIO
-PlatformIo vscode user guide and tips
+PlatformIo vscode user guide and tips after fresh install on ubuntu or debian
 
 1. First run tools/setup.sh
 2. Install PlatformIO vscode extenstions
@@ -21,9 +21,13 @@ Host example
 	IdentityFile ~/.ssh/key
 	IdentitiesOnly yes
 
-After fresh install on ubuntu or debian see tools
+3. Close and reopen vscode
 
-Initialize a new project
+4. Initialize a new project
 ```bash
 pio project init --board esp32-s3-devkitc-1 --project-option "platform=espressif32@6.9.0" --project-option "framework=arduino"
 ```
+
+5. Verify basic sketch uploads and no issues
+
+6. Enable debugging see tools debug.sh
