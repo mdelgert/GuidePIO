@@ -12,8 +12,8 @@ void setup()
 void loop()
 {
     Serial.println("Hello Guide!");
-    // digitalWrite(LED_PIN, HIGH);
-    // delay(1000);
-    // digitalWrite(LED_PIN, LOW);
+    digitalWrite(LED_PIN, HIGH);
+    delay(1000);
+    digitalWrite(LED_PIN, LOW);
     delay(1000);                 
 }
