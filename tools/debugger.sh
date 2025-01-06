@@ -4,15 +4,24 @@ set -e  # Exit on any error
 set -o pipefail  # Catch pipeline errors
 
 # Variables
+TOOLCHAIN_NAME="toolchain-xtensa-esp32s3"
 SOURCE_DIR="$HOME/source/esp"
 ESP_IDF_REPO="https://github.com/espressif/esp-idf.git"
 ESP_IDF_BRANCH="v5.2.2"
 ESP_IDF_DIR="$SOURCE_DIR/esp-idf"
-ESPRESSIF_TOOLS_DIR="$HOME/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403"
-PLATFORMIO_BIN_DIR="$HOME/.platformio/packages/toolchain-xtensa-esp32s3/bin"
-PLATFORMIO_LIB_DIR="$HOME/.platformio/packages/toolchain-xtensa-esp32s3/lib"
+ESPRESSIF_TOOLS_DIR="$HOME/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb"
+PLATFORMIO_PATH="$HOME/.platformio/packages/$TOOLCHAIN_NAME"
+PLATFORMIO_BIN_DIR="$PLATFORMIO_PATH/bin"
+PLATFORMIO_LIB_DIR="$PLATFORMIO_PATH/lib"
 
 # Functions
+verify_toolchain_path() {
+    if [ ! -d "$PLATFORMIO_PATH" ]; then
+        echo "Error: Toolchain path $PLATFORMIO_PATH does not exist. Please ensure PlatformIO and the toolchain are installed."
+        exit 1
+    fi
+}
+
 setup_esp_idf() {
     echo "Setting up ESP-IDF v5.2.2..."
     if [ ! -d "$ESP_IDF_DIR" ]; then
@@ -22,25 +31,22 @@ setup_esp_idf() {
         echo "ESP-IDF repository already cloned at $ESP_IDF_DIR."
     fi
 
-    # Run ESP-IDF installer
     echo "Installing ESP-IDF tools for ESP32-S3..."
     cd "$ESP_IDF_DIR"
     ./install.sh esp32s3
 }
 
-copy_new_files() {
-    echo "Copying new debugger files..."
-    cp "$ESPRESSIF_TOOLS_DIR/bin/xtensa-esp32s3-elf-gdb" "$PLATFORMIO_BIN_DIR/"
-    cp "$ESPRESSIF_TOOLS_DIR/bin/xtensa-esp-elf-gdb-no-python" "$PLATFORMIO_BIN_DIR/"
-    cp "$ESPRESSIF_TOOLS_DIR/lib/xtensa_esp32s3.so" "$PLATFORMIO_LIB_DIR/"
-    echo "New debugger files copied successfully."
-}
-
-backup_original() {
+backup_and_copy_files() {
     echo "Backing up existing GDB binary..."
     if [ -f "$PLATFORMIO_BIN_DIR/xtensa-esp32s3-elf-gdb" ]; then
         mv "$PLATFORMIO_BIN_DIR/xtensa-esp32s3-elf-gdb" "$PLATFORMIO_BIN_DIR/xtensa-esp32s3-elf-gdb.orig"
     fi
+
+    echo "Copying new debugger files..."
+    cp "$ESPRESSIF_TOOLS_DIR/bin/xtensa-esp32s3-elf-gdb" "$PLATFORMIO_BIN_DIR/"
+    cp "$ESPRESSIF_TOOLS_DIR/bin/xtensa-esp-elf-gdb-no-python" "$PLATFORMIO_BIN_DIR/"
+    cp "$ESPRESSIF_TOOLS_DIR/lib/xtensa_esp32s3.so" "$PLATFORMIO_LIB_DIR/"
+    echo "Debugger files copied successfully."
 }
 
 restore_original() {
@@ -56,20 +62,21 @@ restore_original() {
 complete_build() {
     echo "Performing a complete build..."
     setup_esp_idf
-    backup_original
-    copy_new_files
+    backup_and_copy_files
     echo "Complete build and update completed successfully."
 }
 
 patch_toolchain() {
     echo "Patching the PlatformIO toolchain with prebuilt binaries..."
-    backup_original
-    copy_new_files
+    backup_and_copy_files
     echo "Toolchain patched successfully."
 }
 
 # Main Script
 echo "Starting ESP32 Debugger Setup..."
+
+# Verify the toolchain path
+verify_toolchain_path
 
 # User options
 echo "Select an option:"
