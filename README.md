@@ -1,7 +1,7 @@
 # GuidePIO
 PlatformIo vscode user guide and tips after fresh install on ubuntu or debian
 
-1. First run tools/setup.sh
+1. First run tools/install.sh
 2. Install PlatformIO vscode extenstions
 
 # PlatformIO IDE extension does not work with Remote Development using SSH
